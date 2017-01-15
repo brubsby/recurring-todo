@@ -1,8 +1,7 @@
-import ConfigParser
 import xmind
-import pprint
 import ast
 import datetime
+import json
 
 
 def shouldRefresh(recurrence, lastUpdatedDate, todayDate):
@@ -40,31 +39,48 @@ def writeConfigFromXMind(subtopics, config):
 
 
 def saveConfig(config):
-	with open(configpath, 'w') as configfile:
+	with open(configPath, 'w') as configfile:
 		config.write(configfile)
 
 
-configpath = "config.ini"
-config = ConfigParser.SafeConfigParser()
-config.read(configpath)
-filepath = "runescape.xmind"
-sheetname = "runescape"
+configPath = "config.json"
+with open(configPath) as data_file:
+	data = json.load(data_file)
+filepath = data["metadata"]["filename"]
+sheetname = data["metadata"]["sheetname"]
 workbook = xmind.load(filepath)
 
 sheets = workbook.getSheets()
 matchingsheets = [sheet for sheet in sheets if sheet.getTitle() == sheetname]
-if len(matchingsheets) != 1:
+if len(matchingsheets) > 1:
 	raise ValueError('Was expecting only one sheet named %s in %s, got %d' % (
 		sheetname, filepath, len(matchingsheets)))
+elif len(matchingsheets) == 0:
+	sheet = workbook.getPrimarySheet()
+	sheet.setTitle(sheetname)
+else:
+	sheet = matchingsheets[0]
 
-sheet = matchingsheets[0]
 rootTopic = sheet.getRootTopic()
+
+rootContentKeys = data["contents"].keys()
+if len(rootContentKeys) > 1:
+	raise ValueError('Was expecting only one root topic in contents in %s, got %d' % (
+		configPath, len(rootContentKeys)))
+elif len(rootContentKeys) == 0:
+	raise ValueError('Was expecting a root topic in contents in %s' % (
+		configPath,))
+
+
+rootContentKey = rootContentKeys[0]
+rootTopic.setTitle(rootContentKey)
+
 subTopics = rootTopic.getSubTopics()
 if not subTopics:
 	subTopics = []
 subTopicTitles = list(subTopic.getTitle().encode("utf-8") for subTopic in subTopics)
 
-configSections = config.sections()
+configTopicKeys = data["contents"][rootContentKey]["topics"].keys()
 todayDate = datetime.datetime.utcnow().date()
 rootTopicNotes = rootTopic.getNotes()
 if rootTopicNotes:
@@ -74,18 +90,19 @@ else:
 	lastUpdatedDate = datetime.date.min
 rootTopic.setPlainNotes(str(todayDate))
 
-for configSection in configSections:
-	recurrence = ast.literal_eval(config.get(configSection, "recurrence"))
+for configTopicKey in configTopicKeys:
+	configTopic = data["contents"][rootContentKey]["topics"][configTopicKey]
+	recurrence = configTopic["recurrence"]
 	if shouldRefresh(recurrence, lastUpdatedDate, todayDate):
 		# add subtopic from config if it is not in the sheet
-		if configSection not in subTopicTitles:
+		if configTopicKey not in subTopicTitles:
 			subTopic = xmind.core.topic.TopicElement()
-			subTopic.setTitle(configSection)
+			subTopic.setTitle(configTopicKey)
 			rootTopic.addSubTopic(subTopic)
 		else:
 			# if it is in the sheet, get it
-			subTopic = next(subTopic for subTopic in subTopics if subTopic.getTitle() == configSection)
-		tasks = ast.literal_eval(config.get(configSection, "tasks"))
+			subTopic = next(subTopic for subTopic in subTopics if subTopic.getTitle() == configTopicKey)
+		tasks = configTopic["tasks"]
 		# get existing task topics
 		existingTaskTopics = subTopic.getSubTopics()
 		if not existingTaskTopics:
