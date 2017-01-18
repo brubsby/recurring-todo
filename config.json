@@ -6,8 +6,16 @@
     "contents" : {
         "Runescape" : {
                 "topics" : {
-                    "Dailies" : {
-                        "tasks" : ["ports", "gorajo card", "daily challenge", "crystal tree", "vix wax", "astromancer top", "alchemist necklace", "jot", "sandstone", "raw bird meat", "skill hats", "miscellania", "div locs (+aura)", "crystal sandstone", "wicked hood", "battlestaves", "broad arrowheads", "invention tasks", "sinkholes", "warbands", "jade vine", "bork", "phoenix", "culinaromancer chest", "razmire", "book of char", "weird old man potato cacti", "big chin", "aquarium", "trinks", "nemi forest", "buy rune shops", "coeden", "calquat", "reaper task", "bandit duty free"],
+                    "Primary Dailies" : {
+                        "tasks" : ["ports", "gorajo card", "daily challenge", "crystal tree", "jot", "sandstone", "div locs (+aura)", "crystal sandstone", "sinkholes"],
+                        "recurrence" : {"type" : "daily"}
+                    },
+                    "Secondary Dailies" : {
+                        "tasks" : ["wicked hood", "invention tasks", "warbands", "jade vine", "bork", "phoenix", "book of char", "big chin", "trinks", "nemi forest", "calquat", "reaper task"],
+                        "recurrence" : {"type" : "daily"}
+                    },
+                    "Collection Dailies" : {
+                        "tasks" : ["raw bird meat", "skill hats", "broad arrowheads", "culinaromancer chest", "razmire", "buy rune shops", "coeden", "bandit duty free", "alchemist necklace", " miscellania", "vis wax"],
                         "recurrence" : {"type" : "daily"}
                     },
                     "Weeklies" : {
