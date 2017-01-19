@@ -4,7 +4,7 @@ import json
 import subprocess
 
 
-def shouldRefresh(recurrence, lastUpdatedDate, todayDate):
+def shouldRefresh(recurrence, todayDate, lastUpdatedDate):
 	if recurrence['type'] == 'daily':
 		return todayDate != lastUpdatedDate
 	elif recurrence['type'] == 'weekly':
@@ -45,10 +45,13 @@ def recursiveRegister(jsonData, categoryString, todayDate, lastUpdatedDate):
 		if k not in ["tasks", "recurrence"]:
 			recursiveRegister(v, categoryString + "." + k, todayDate, lastUpdatedDate)
 	if "tasks" in jsonData and type(jsonData["tasks"]) == list and "recurrence" in jsonData and shouldRefresh(jsonData["recurrence"], todayDate, lastUpdatedDate):
+		command = "todo rmctx " + categoryString + " --force"
+		print(command)
+		subprocess.call(command)
 		for task in jsonData["tasks"]:
 			command = "todo add \"" + task + "\" --context " + categoryString
 			print(command)
-			subprocess.call(command)
+			subprocess.call(command)  # TODO pool these calls
 
 
 todayDate = datetime.datetime.utcnow().date()
