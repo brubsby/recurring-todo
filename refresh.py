@@ -43,7 +43,7 @@ def recursiveRegister(jsonData, categoryString, todayDate, lastUpdatedDate):
 		return
 	for k, v in jsonData.items():
 		if k not in ["tasks", "recurrence", "lastdate"]:
-			recursiveRegister(v, categoryString + "." + k, todayDate, lastUpdatedDate)
+			recursiveRegister(v, (categoryString + "." + k) if categoryString else k, todayDate, lastUpdatedDate)
 	if "tasks" in jsonData and type(jsonData["tasks"]) == list and "recurrence" in jsonData and shouldRefresh(jsonData["recurrence"], todayDate, lastUpdatedDate):
 		command = "todo rmctx " + categoryString + " --force"
 		print(command)
