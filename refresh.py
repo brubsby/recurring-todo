@@ -47,11 +47,11 @@ def recursiveRegister(jsonData, categoryString, todayDate, lastUpdatedDate):
 	if "tasks" in jsonData and type(jsonData["tasks"]) == list and "recurrence" in jsonData and shouldRefresh(jsonData["recurrence"], todayDate, lastUpdatedDate):
 		command = "todo rmctx " + categoryString + " --force"
 		print(command)
-		subprocess.call(command)
+		subprocess.call(command, shell=True)
 		for task in jsonData["tasks"]:
 			command = "todo add \"" + task + "\" --context " + categoryString
 			print(command)
-			subprocess.call(command)  # TODO pool these calls
+			subprocess.call(command, shell=True)  # TODO pool these calls
 
 
 configPath = "config.json"
