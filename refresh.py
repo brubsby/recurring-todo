@@ -29,9 +29,9 @@ def stringToDate(string):
 	return datetime.datetime.strptime(string, "%Y-%m-%d").date()
 
 
-def saveConfig(config):
-	with open(configPath, 'w') as configfile:
-		config.write(configfile)
+def dumpJSON(filePath, data):
+	with open(filePath, 'w') as outfile:
+		json.dump(data, outfile, indent=4)
 
 
 def registerTasks(jsonData, todayDate, lastUpdatedDate):
@@ -42,7 +42,7 @@ def recursiveRegister(jsonData, categoryString, todayDate, lastUpdatedDate):
 	if not jsonData:
 		return
 	for k, v in jsonData.items():
-		if k not in ["tasks", "recurrence"]:
+		if k not in ["tasks", "recurrence", "lastdate"]:
 			recursiveRegister(v, categoryString + "." + k, todayDate, lastUpdatedDate)
 	if "tasks" in jsonData and type(jsonData["tasks"]) == list and "recurrence" in jsonData and shouldRefresh(jsonData["recurrence"], todayDate, lastUpdatedDate):
 		command = "todo rmctx " + categoryString + " --force"
@@ -54,10 +54,15 @@ def recursiveRegister(jsonData, categoryString, todayDate, lastUpdatedDate):
 			subprocess.call(command)  # TODO pool these calls
 
 
-todayDate = datetime.datetime.utcnow().date()
-
 configPath = "config.json"
 with open(configPath) as data_file:
 	data = json.load(data_file)
 
-registerTasks(data, todayDate, todayDate - datetime.timedelta(999))  # TODO save and load last updated time
+todayDate = datetime.datetime.utcnow().date()
+lastUpdatedDate = stringToDate(data["lastdate"]) if "lastdate" in data else (todayDate - datetime.timedelta(999))
+
+registerTasks(data, todayDate, lastUpdatedDate)  # TODO save and load last updated time
+
+data["lastdate"] = str(todayDate)
+
+dumpJSON(configPath, data)

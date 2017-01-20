@@ -1,26 +1,92 @@
 {
-    "runescape" : {
-        "dailies" : {
-            "primary" : {
-                "tasks" : ["ports", "gorajo card", "daily challenge", "crystal tree", "jot", "sandstone", "div locs (+aura)", "crystal sandstone", "sinkholes"],
-                "recurrence" : {"type" : "daily"}
+    "lastdate": "2017-01-19",
+    "runescape": {
+        "dailies": {
+            "secondary": {
+                "recurrence": {
+                    "type": "daily"
+                },
+                "tasks": [
+                    "wicked hood",
+                    "invention tasks",
+                    "warbands",
+                    "jade vine",
+                    "bork",
+                    "phoenix",
+                    "book of char",
+                    "big chin",
+                    "trinks",
+                    "nemi forest",
+                    "calquat",
+                    "reaper task"
+                ]
             },
-            "secondary" : {
-                "tasks" : ["wicked hood", "invention tasks", "warbands", "jade vine", "bork", "phoenix", "book of char", "big chin", "trinks", "nemi forest", "calquat", "reaper task"],
-                "recurrence" : {"type" : "daily"}
+            "primary": {
+                "recurrence": {
+                    "type": "daily"
+                },
+                "tasks": [
+                    "ports",
+                    "gorajo card",
+                    "daily challenge",
+                    "crystal tree",
+                    "jot",
+                    "sandstone",
+                    "div locs (+aura)",
+                    "crystal sandstone",
+                    "sinkholes"
+                ]
             },
-            "collection" : {
-                "tasks" : ["raw bird meat", "skill hats", "broad arrowheads", "culinaromancer chest", "razmire", "buy rune shops", "coeden", "bandit duty free", "alchemist necklace", "miscellania", "vis wax"],
-                "recurrence" : {"type" : "daily"}
+            "collection": {
+                "recurrence": {
+                    "type": "daily"
+                },
+                "tasks": [
+                    "raw bird meat",
+                    "skill hats",
+                    "broad arrowheads",
+                    "culinaromancer chest",
+                    "razmire",
+                    "buy rune shops",
+                    "coeden",
+                    "bandit duty free",
+                    "alchemist necklace",
+                    "miscellania",
+                    "vis wax"
+                ]
             }
         },
-        "weeklies" : {
-            "tasks" : ["meg", "aquarium chest", "skeletal horror", "tears of guthix", "pig familiar", "agoroth", "circus", "strange rocks", "pengs", "char's training cave", "rush of blood", "replay broken home", "replay dimension of disaster"],
-            "recurrence" : {"type" : "weekly", "day" : 3}
+        "monthlies": {
+            "recurrence": {
+                "type": "monthly",
+                "day": 1
+            },
+            "tasks": [
+                "oyster",
+                "god statues",
+                "troll invasion"
+            ]
         },
-        "monthlies" : {
-            "tasks" : ["oyster", "god statues", "troll invasion"],
-            "recurrence" : {"type" : "monthly", "day" : 1}
+        "weeklies": {
+            "recurrence": {
+                "type": "weekly",
+                "day": 3
+            },
+            "tasks": [
+                "meg",
+                "aquarium chest",
+                "skeletal horror",
+                "tears of guthix",
+                "pig familiar",
+                "agoroth",
+                "circus",
+                "strange rocks",
+                "pengs",
+                "char's training cave",
+                "rush of blood",
+                "replay broken home",
+                "replay dimension of disaster"
+            ]
         }
-    }    
+    }
 }
